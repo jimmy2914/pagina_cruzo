@@ -1,18 +1,10 @@
 "use client";
 import Link from "next/link";
 import { motion, Variants } from "framer-motion"; // Para animaciones sutiles
-import React, { useState } from "react"; // Para manejar el estado del formulario
+import React from "react"; // Ya no necesitamos useState para formData en este enfoque
 import { FaFacebookSquare, FaInstagramSquare } from 'react-icons/fa';
 
 export default function ContactenosPage() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState("");
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -36,34 +28,6 @@ export default function ContactenosPage() {
     },
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitMessage("");
-
-    // Aquí simularías el envío del formulario a tu backend o un servicio de email.
-    // En una aplicación real, usarías una API (ej. /api/contact) o un servicio externo (SendGrid, EmailJS, etc.)
-    try {
-      // Simulación de una llamada a la API
-      console.log("Datos del formulario enviados:", formData);
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simula un retraso de red
-
-      setSubmitMessage("¡Mensaje enviado con éxito! Nos pondremos en contacto pronto.");
-      setFormData({ name: "", email: "", subject: "", message: "" }); // Limpiar el formulario
-    } catch (error) {
-      console.error("Error al enviar el formulario:", error);
-      setSubmitMessage("Hubo un error al enviar tu mensaje. Por favor, inténtalo de nuevo.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   return (
     <motion.div
@@ -99,7 +63,7 @@ export default function ContactenosPage() {
                 <h3 className="text-xl font-semibold text-[#963f24] mb-1">Email</h3>
                 <p className="text-gray-700">
                   <a href="mailto:info@cruzodelmeta.com" className="text-blue-600 hover:underline">
-                    info@cruzodelmeta.com
+                    cruzopremium@gmail.com
                   </a>
                 </p>
               </motion.div>
@@ -114,7 +78,7 @@ export default function ContactenosPage() {
               <motion.div variants={itemVariants}>
                 <h3 className="text-xl font-semibold text-[#963f24] mb-1">Dirección</h3>
                 <p className="text-gray-700">
-                  Calle Principal #123, Restrepo, Meta, Colombia
+                  Calle 16 N° 1C - 96 Villa Reina
                 </p>
               </motion.div>
               <motion.div variants={itemVariants}>
@@ -129,7 +93,8 @@ export default function ContactenosPage() {
           {/* Sección del Formulario de Contacto */}
           <motion.div className="bg-[#e26d44] p-8 rounded-xl shadow-lg" variants={itemVariants}>
             <h2 className="text-3xl font-bold text-white mb-6 text-center">Envíanos un Mensaje</h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            {/* CAMBIOS AQUÍ: `action` y `method`, eliminado `onSubmit` */}
+            <form action="https://formspree.io/f/mrboywqy" method="POST" className="space-y-6"> {/* ¡REEMPLAZA xyzaqrwe con tu propio ID de Formspree! */}
               <motion.div variants={itemVariants}>
                 <label htmlFor="name" className="block text-white text-sm font-medium mb-2">
                   Nombre Completo
@@ -137,9 +102,8 @@ export default function ContactenosPage() {
                 <input
                   type="text"
                   id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
+                  name="name" // Mantener el atributo `name` es crucial para Formspree
+                  // Eliminados `value` y `onChange`
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#963f24]"
                 />
@@ -151,9 +115,8 @@ export default function ContactenosPage() {
                 <input
                   type="email"
                   id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
+                  name="_replyto" // Formspree usa `_replyto` para el email del remitente
+                  // Eliminados `value` y `onChange`
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#963f24]"
                 />
@@ -166,8 +129,7 @@ export default function ContactenosPage() {
                   type="text"
                   id="subject"
                   name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
+                  // Eliminados `value` y `onChange`
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#963f24]"
                 />
@@ -179,8 +141,7 @@ export default function ContactenosPage() {
                 <textarea
                   id="message"
                   name="message"
-                  value={formData.message}
-                  onChange={handleChange}
+                  // Eliminados `value` y `onChange`
                   rows={5}
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#963f24]"
@@ -188,24 +149,13 @@ export default function ContactenosPage() {
               </motion.div>
               <motion.button
                 type="submit"
-                className="w-full bg-[#963f24] text-white font-semibold py-3 px-6 rounded-md hover:bg-[#7a321d] transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={isSubmitting}
+                className="w-full bg-[#963f24] text-white font-semibold py-3 px-6 rounded-md hover:bg-[#7a321d] transition duration-300"
+                // Eliminado `disabled={isSubmitting}`
                 variants={itemVariants}
               >
-                {isSubmitting ? "Enviando..." : "Enviar Mensaje"}
+                Enviar Mensaje
               </motion.button>
-              {submitMessage && (
-                <motion.p
-                  className={`mt-4 text-center ${
-                    submitMessage.includes("éxito") ? "text-green-200" : "text-red-200"
-                  }`}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {submitMessage}
-                </motion.p>
-              )}
+              {/* Eliminado el párrafo submitMessage, Formspree gestionará la confirmación */}
             </form>
           </motion.div>
         </motion.section>
@@ -219,16 +169,13 @@ export default function ContactenosPage() {
           <p className="text-lg mb-6">Conéctate con nosotros y descubre nuestras últimas novedades.</p>
           <div className="flex justify-center space-x-6">
             <Link href="https://www.facebook.com/profile.php?id=61579025093574" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#e26d44] transition duration-300 text-4xl">
-              {/* Icono de Facebook (puedes usar un componente de icono real como de react-icons) */}
               <FaFacebookSquare/> 
               <span className="sr-only">Facebook</span>
             </Link>
             <Link href="https://www.instagram.com/cruzo_premium/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#e26d44] transition duration-300 text-4xl">
-              {/* Icono de Instagram */}
               <FaInstagramSquare/>
               <span className="sr-only">Instagram</span>
             </Link>
-            {/* Agrega más redes sociales si es necesario */}
           </div>
           <p className="mt-8 text-sm opacity-80">
             ¿Prefieres algo más rápido? Envíanos un mensaje directo por Instagram.

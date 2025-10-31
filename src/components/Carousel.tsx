@@ -78,10 +78,18 @@ export default function Carousel() {
         &#10095;
       </button>
 
-      {/* Texto */}
-      <div className="absolute top-2 left-30 text-white z-10">
-        <img src="/images/cruzo_letra.png" alt="Bienvenido a Mi Empresa" className="h-80 w-140 drop-shadow-lg" />
-        <p className="mt-2 text-lg md:text-2xl drop-shadow-lg">Descubre nuestras deliciosas granolas y productos naturales</p>
+      {/* Texto - CORRECCIÓN AQUÍ */}
+      <div className="absolute z-10 text-white
+                    top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center max-w-[90vw] px-4
+                    md:top-60 md:left-120 md:transform-none md:text-left md:max-w-none">
+        {/* La imagen del logo no es texto, así que no aplicamos text-black directamente, pero ajustamos su tamaño */}
+        <img src="/images/cruzo_letra.png" alt="Bienvenido a Mi Empresa" className="h-40 md:h-80 w-auto mx-auto md:mx-0 drop-shadow-lg" />
+        
+        {/* Aquí aplicamos text-black y font-bold/font-semibold */}
+        <p className="mt-2 text-base md:text-2xl drop-shadow-lg 
+                      text-white font-bold">
+          Descubre nuestras deliciosas granolas y productos naturales
+        </p>
       </div>
       
     </div>
